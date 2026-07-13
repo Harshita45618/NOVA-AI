@@ -1,11 +1,14 @@
 "use client";
 
-import { FileText, Sparkles } from "lucide-react";
+import { FileText, Sparkles, UploadCloud } from "lucide-react";
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 
 type NotesInputProps = {
   text: string;
   setText: (value: string) => void;
   onGenerate: () => void;
+  onFileSelect: (file: File) => void;
   loading: boolean;
 };
 
@@ -13,105 +16,215 @@ export default function NotesInput({
   text,
   setText,
   onGenerate,
+  onFileSelect,
   loading,
 }: NotesInputProps) {
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        onFileSelect(acceptedFiles[0]);
+      }
+    },
+    [onFileSelect]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      "application/pdf": [".pdf"],
+    },
+    multiple: false,
+  });
+
   const wordCount = text.trim()
     ? text.trim().split(/\s+/).length
     : 0;
 
   const characterCount = text.length;
 
+  const readTime = Math.max(
+    1,
+    Math.ceil(wordCount / 200)
+  );
+
   return (
-    <div className="bg-white rounded-3xl shadow-lg border border-stone-200 p-8 h-full flex flex-col">
+    <div className="bg-white rounded-[32px] border border-stone-200 shadow-sm p-8 h-full flex flex-col">
 
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="bg-green-100 p-3 rounded-xl">
-          <FileText className="text-[#5C7C6F]" size={24} />
-        </div>
 
-        <div>
-          <h2 className="text-2xl font-bold text-stone-800">
-            Paste Your Notes
-          </h2>
+      <div className="flex items-start justify-between mb-8">
 
-          <p className="text-stone-500 text-sm">
-            Paste lecture notes, assignments or study material.
-          </p>
-        </div>
-      </div>
+        <div className="flex gap-4">
 
-      {/* Text Area */}
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Start typing or paste your notes here..."
-        className="
-          flex-1
-          min-h-[380px]
-          rounded-2xl
-          border
-          border-stone-300
-          bg-stone-50
-          p-5
-          resize-none
-          outline-none
-          text-stone-700
-          placeholder:text-stone-400
-          focus:ring-2
-          focus:ring-[#5C7C6F]
-          focus:border-transparent
-          transition
-        "
-      />
+          <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg">
 
-      {/* Footer */}
-      <div className="mt-6">
+            <FileText
+              className="text-white"
+              size={30}
+            />
 
-        <div className="flex justify-between items-center mb-5">
+          </div>
 
-          <div className="flex gap-6 text-sm text-stone-500">
+          <div>
 
-            <span>
-              <strong>{wordCount}</strong> Words
-            </span>
+            <h2 className="text-3xl font-bold text-stone-900">
 
-            <span>
-              <strong>{characterCount}</strong> Characters
-            </span>
+              Study Notes
+
+            </h2>
+
+            <p className="mt-2 text-stone-500 leading-7">
+
+              Paste your notes or upload a PDF to generate
+              AI-powered summaries.
+
+            </p>
 
           </div>
 
         </div>
 
-        <button
-          onClick={onGenerate}
-          disabled={loading || !text.trim()}
+        <div
+          {...getRootProps()}
           className="
-            w-full
-            flex
-            justify-center
-            items-center
-            gap-2
-            py-4
+            cursor-pointer
             rounded-2xl
-            font-semibold
+            bg-violet-600
+            hover:bg-violet-700
+            px-5
+            py-4
             text-white
-            bg-gradient-to-r
-            from-[#5C7C6F]
-            to-[#6B9080]
-            hover:scale-[1.02]
+            flex
+            items-center
+            gap-3
+            shadow-lg
             transition
-            disabled:opacity-50
-            disabled:cursor-not-allowed
           "
         >
-          <Sparkles size={20} />
 
-          {loading ? "Generating Summary..." : "Generate AI Summary"}
-        </button>
+          <input {...getInputProps()} />
+
+          <UploadCloud size={20} />
+
+          Upload PDF
+
+        </div>
 
       </div>
+
+      {/* Textarea */}
+
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Paste your notes here..."
+        className="
+          flex-1
+          rounded-3xl
+          border-2
+          border-stone-200
+          bg-stone-50
+          p-7
+          resize-none
+          outline-none
+          text-lg
+          leading-8
+          text-stone-700
+          transition
+          focus:border-violet-500
+          focus:bg-white
+        "
+      />
+
+      {/* Stats */}
+
+      <div className="grid grid-cols-3 gap-5 mt-8">
+
+        <div className="rounded-2xl bg-stone-50 border border-stone-200 p-5">
+
+          <p className="text-sm text-stone-500">
+
+            Words
+
+          </p>
+
+          <h3 className="text-3xl font-bold mt-2">
+
+            {wordCount}
+
+          </h3>
+
+        </div>
+
+        <div className="rounded-2xl bg-stone-50 border border-stone-200 p-5">
+
+          <p className="text-sm text-stone-500">
+
+            Characters
+
+          </p>
+
+          <h3 className="text-3xl font-bold mt-2">
+
+            {characterCount}
+
+          </h3>
+
+        </div>
+
+        <div className="rounded-2xl bg-stone-50 border border-stone-200 p-5">
+
+          <p className="text-sm text-stone-500">
+
+            Read Time
+
+          </p>
+
+          <h3 className="text-3xl font-bold mt-2">
+
+            {readTime} min
+
+          </h3>
+
+        </div>
+
+      </div>
+
+      {/* Generate */}
+
+      <button
+        onClick={onGenerate}
+        disabled={loading || !text.trim()}
+        className="
+          mt-8
+          w-full
+          rounded-3xl
+          bg-gradient-to-r
+          from-violet-600
+          via-indigo-600
+          to-blue-600
+          py-5
+          text-lg
+          font-bold
+          text-white
+          flex
+          items-center
+          justify-center
+          gap-3
+          shadow-lg
+          transition-all
+          hover:scale-[1.01]
+          disabled:opacity-50
+        "
+      >
+
+        <Sparkles size={22} />
+
+        {loading
+          ? "Generating AI Summary..."
+          : "Generate AI Summary"}
+
+      </button>
 
     </div>
   );

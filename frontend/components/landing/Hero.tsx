@@ -1,4 +1,4 @@
-import Button from "../ui/Button";
+import Button from "../common/Button";
 import Container from "../common/Container";
 
 export default function Hero() {
@@ -29,9 +29,11 @@ export default function Hero() {
               Get Started Free
             </Button>
 
-            <Button variant="secondary">
-              Watch Demo
-            </Button>
+            <Button
+  className="bg-white text-violet-600 border border-violet-600 hover:bg-violet-50"
+>
+  Watch Demo
+</Button>
           </div>
 
         </div>

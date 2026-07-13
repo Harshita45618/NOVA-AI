@@ -1,25 +1,36 @@
 "use client";
 
+import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import Header from "@/components/ai-notes/Header";
 import NotesInput from "@/components/ai-notes/NotesInput";
 import SummaryCard from "@/components/ai-notes/SummaryCard";
 
 import { generateSummary } from "@/services/ai";
+import { generateQuiz } from "@/services/quiz";
+import { generateFlashcards } from "@/services/flashcards";
+import { uploadPDF } from "@/services/pdf";
 
 export default function AINotesPage() {
+  const router = useRouter();
+
   const [text, setText] = useState("");
   const [summary, setSummary] = useState("");
+
   const [loading, setLoading] = useState(false);
+  const [quizLoading, setQuizLoading] = useState(false);
+  const [flashcardLoading, setFlashcardLoading] = useState(false);
 
   async function handleGenerate() {
     if (!text.trim()) return;
 
-    setLoading(true);
-
     try {
+      setLoading(true);
+
       const data = await generateSummary(text);
+
       setSummary(data.summary);
     } catch (error) {
       console.error(error);
@@ -29,26 +40,115 @@ export default function AINotesPage() {
     }
   }
 
+  async function handlePDFUpload(file: File) {
+    try {
+      setLoading(true);
+
+      const data = await uploadPDF(file);
+
+      setText(data.text);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to upload PDF.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+ async function handleGenerateQuiz() {
+  if (!text.trim()) return;
+
+  try {
+    setQuizLoading(true);
+
+    const data = await generateQuiz(text);
+
+    console.log("Quiz Response:", data);
+    console.log("Questions:", data.questions);
+    console.log("Is Array:", Array.isArray(data.questions));
+
+    sessionStorage.setItem(
+      "quiz",
+      JSON.stringify(data.questions)
+    );
+
+    console.log(
+      "Stored Quiz:",
+      sessionStorage.getItem("quiz")
+    );
+
+    router.push("/dashboard/quiz");
+
+  } catch (error) {
+    console.error(error);
+    alert("Failed to generate quiz.");
+  } finally {
+    setQuizLoading(false);
+  }
+}
+
+  async function handleGenerateFlashcards() {
+    if (!text.trim()) return;
+
+    try {
+      setFlashcardLoading(true);
+
+      const data = await generateFlashcards(text);
+
+      sessionStorage.setItem(
+        "flashcards",
+        JSON.stringify(data.flashcards)
+      );
+
+      router.push("/dashboard/flashcards");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to generate flashcards.");
+    } finally {
+      setFlashcardLoading(false);
+    }
+  }
+
   return (
-    <main className="min-h-screen bg-[#F8F7F4] p-8">
+    <DashboardLayout>
 
-      <Header />
+      <div className="max-w-7xl mx-auto">
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+        <Header />
 
-        <NotesInput
-          text={text}
-          setText={setText}
-          onGenerate={handleGenerate}
-          loading={loading}
-        />
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 mt-8">
 
-        <SummaryCard
-          summary={summary}
-        />
+          <div className="h-[780px]">
+
+            <NotesInput
+              text={text}
+              setText={setText}
+              onGenerate={handleGenerate}
+              onFileSelect={handlePDFUpload}
+              loading={loading}
+            />
+
+          </div>
+
+          <div className="h-[780px]">
+
+            <SummaryCard
+              summary={summary}
+              loading={loading}
+
+              onGenerateQuiz={handleGenerateQuiz}
+              quizLoading={quizLoading}
+
+              onGenerateFlashcards={handleGenerateFlashcards}
+              flashcardLoading={flashcardLoading}
+            />
+
+          </div>
+
+        </div>
 
       </div>
 
-    </main>
+    </DashboardLayout>
   );
 }

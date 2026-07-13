@@ -1,0 +1,16 @@
+export async function generateQuiz(text: string) {
+  const response = await fetch(
+    "http://127.0.0.1:8000/generate-quiz",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text,
+      }),
+    }
+  );
+
+  return response.json();
+}

@@ -1,29 +1,64 @@
-import Button from "../ui/Button";
+"use client";
+
+import { Flame } from "lucide-react";
 
 export default function WelcomeCard() {
   return (
-    <div className="rounded-3xl bg-white p-8 shadow-sm">
+    <div className="bg-gradient-to-r from-violet-600 via-indigo-600 to-blue-600 rounded-3xl px-10 py-8 shadow-lg">
 
-      <p className="font-semibold text-[#5C7C6F]">
-        Welcome Back 👋
-      </p>
+      <div className="flex items-center justify-between">
 
-      <h1 className="mt-3 text-4xl font-bold text-[#2F3437]">
-        Good Evening, Harshita
-      </h1>
+        <div>
 
-      <p className="mt-4 max-w-xl text-gray-600">
-        Ready to continue your learning?
-        Let NOVA AI help you summarize notes,
-        generate quizzes and organize your study plan.
-      </p>
+          <p className="text-violet-100 text-sm uppercase tracking-wider">
 
-      <div className="mt-8 flex gap-4">
-        <Button>AI Notes</Button>
+            Welcome Back
 
-        <Button variant="secondary">
-          Generate Quiz
-        </Button>
+          </p>
+
+          <h1 className="text-5xl font-bold text-white mt-2">
+
+            Good Evening, Harshita 👋
+
+          </h1>
+
+          <p className="text-violet-100 mt-4 text-lg">
+
+            Ready to study smarter today?
+
+          </p>
+
+        </div>
+
+        <div className="bg-white/10 rounded-2xl px-6 py-5">
+
+          <div className="flex items-center gap-3">
+
+            <Flame
+              className="text-orange-300"
+              size={28}
+            />
+
+            <div>
+
+              <p className="text-violet-100 text-sm">
+
+                Study Streak
+
+              </p>
+
+              <h2 className="text-3xl font-bold text-white">
+
+                7 Days 🔥
+
+              </h2>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
     </div>
