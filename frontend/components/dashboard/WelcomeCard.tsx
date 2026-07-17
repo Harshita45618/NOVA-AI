@@ -3,6 +3,17 @@
 import { Flame } from "lucide-react";
 
 export default function WelcomeCard() {
+  const userName = "Karan";
+
+  const hour = new Date().getHours();
+
+  const greeting =
+    hour < 12
+      ? "Good Morning"
+      : hour < 17
+      ? "Good Afternoon"
+      : "Good Evening";
+
   return (
     <div
       className="
@@ -24,7 +35,7 @@ export default function WelcomeCard() {
           </p>
 
           <h1 className="text-4xl font-bold text-slate-900 mt-3">
-            Good Morning, Harshita 👋
+            {greeting}, {userName} 👋
           </h1>
 
           <p className="text-lg text-slate-600 mt-4">
