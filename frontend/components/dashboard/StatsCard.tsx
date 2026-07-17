@@ -16,28 +16,27 @@ export default function StatsCard({
   return (
     <div
       className="
-        bg-white
-        rounded-3xl
-        border
-        border-stone-200
-        shadow-sm
-        hover:shadow-md
-        transition-all
-        p-6
-      "
+      bg-white
+      rounded-3xl
+      border
+      border-slate-200
+      shadow-sm
+      p-6
+      transition-all
+      duration-300
+      hover:-translate-y-1
+      hover:shadow-lg
+    "
     >
       <div className="flex items-center justify-between">
-
         <div>
-
-          <p className="text-sm font-medium text-stone-500">
+          <p className="text-sm font-medium text-slate-500">
             {title}
           </p>
 
-          <h2 className="mt-2 text-4xl font-bold text-stone-900">
+          <h2 className="mt-2 text-4xl font-bold text-slate-900">
             {value}
           </h2>
-
         </div>
 
         <div
@@ -53,10 +52,9 @@ export default function StatsCard({
         >
           <Icon
             size={30}
-            className="text-white"
+            className="text-slate-700"
           />
         </div>
-
       </div>
     </div>
   );

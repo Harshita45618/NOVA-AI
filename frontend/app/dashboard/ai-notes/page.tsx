@@ -13,6 +13,8 @@ import { generateQuiz } from "@/services/quiz";
 import { generateFlashcards } from "@/services/flashcards";
 import { uploadPDF } from "@/services/pdf";
 
+import { toast } from "sonner";
+
 export default function AINotesPage() {
   const router = useRouter();
 
@@ -32,9 +34,10 @@ export default function AINotesPage() {
       const data = await generateSummary(text);
 
       setSummary(data.summary);
+      toast.success("Summary generated successfully!");
     } catch (error) {
       console.error(error);
-      alert("Failed to generate summary.");
+      toast.error("Failed to generate summary.");
     } finally {
       setLoading(false);
     }
@@ -47,9 +50,10 @@ export default function AINotesPage() {
       const data = await uploadPDF(file);
 
       setText(data.text);
+      toast.success("PDF uploaded successfully!");
     } catch (error) {
       console.error(error);
-      alert("Failed to upload PDF.");
+      toast.error("Failed to upload PDF.");
     } finally {
       setLoading(false);
     }
@@ -77,8 +81,8 @@ export default function AINotesPage() {
       sessionStorage.getItem("quiz")
     );
 
+    toast.success("Quiz generated successfully!");
     router.push("/dashboard/quiz");
-
   } catch (error) {
     console.error(error);
     alert("Failed to generate quiz.");
@@ -103,7 +107,7 @@ export default function AINotesPage() {
       router.push("/dashboard/flashcards");
     } catch (error) {
       console.error(error);
-      alert("Failed to generate flashcards.");
+      toast.error("Failed to generate flashcards.");
     } finally {
       setFlashcardLoading(false);
     }

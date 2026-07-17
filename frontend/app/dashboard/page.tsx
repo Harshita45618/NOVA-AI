@@ -31,17 +31,17 @@ const cards = [
     title: "Flashcards",
     description: "Revise concepts faster.",
     href: "/dashboard/flashcards",
-    emoji: "🗂️",
+    emoji: "📚",
   },
   {
-    title: "AI Chat",
-    description: "Ask questions from your notes.",
+    title: "Study Assistant",
+    description: "Ask AI questions about your subjects.",
     href: "/dashboard/chat",
     emoji: "💬",
   },
   {
     title: "Study Planner",
-    description: "Generate a smart study schedule.",
+    description: "Generate a personalized study schedule.",
     href: "/dashboard/planner",
     emoji: "📅",
   },
@@ -51,7 +51,7 @@ export default function DashboardPage() {
   return (
     <DashboardLayout>
 
-      {/* Welcome Card */}
+      {/* Welcome */}
 
       <WelcomeCard />
 
@@ -65,33 +65,33 @@ export default function DashboardPage() {
           title="Notes Created"
           value="15"
           icon={FileText}
-          color="bg-violet-600"
+          color="bg-sky-100"
         />
 
         <StatsCard
           title="Quizzes Taken"
           value="9"
           icon={Brain}
-          color="bg-blue-600"
+          color="bg-indigo-100"
         />
 
         <StatsCard
           title="Flashcards"
           value="42"
           icon={Layers3}
-          color="bg-green-600"
+          color="bg-emerald-100"
         />
 
         <StatsCard
           title="Study Hours"
           value="18h"
           icon={Clock3}
-          color="bg-orange-500"
+          color="bg-amber-100"
         />
 
       </div>
 
-      {/* Quick Actions + Recent Activity */}
+      {/* Quick Actions */}
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-10">
 
@@ -105,11 +105,11 @@ export default function DashboardPage() {
 
       </div>
 
-      {/* Explore NOVA AI */}
+      {/* Explore */}
 
       <div>
 
-        <h2 className="text-2xl font-bold text-stone-900 mb-6">
+        <h2 className="text-2xl font-bold text-slate-900 mb-6">
           Explore NOVA AI
         </h2>
 
@@ -125,12 +125,13 @@ export default function DashboardPage() {
                 bg-white
                 rounded-3xl
                 border
-                border-stone-200
+                border-slate-200
                 shadow-sm
                 p-8
-                hover:shadow-xl
-                hover:-translate-y-1
                 transition-all
+                duration-300
+                hover:shadow-lg
+                hover:-translate-y-1
               "
             >
 
@@ -138,22 +139,16 @@ export default function DashboardPage() {
                 {card.emoji}
               </div>
 
-              <h2 className="text-2xl font-bold text-stone-900 group-hover:text-violet-600 transition">
-
+              <h2 className="text-2xl font-bold text-slate-900 transition-colors group-hover:text-sky-600">
                 {card.title}
-
               </h2>
 
-              <p className="text-stone-500 mt-3 leading-7">
-
+              <p className="text-slate-500 mt-3 leading-7">
                 {card.description}
-
               </p>
 
-              <p className="mt-6 text-violet-600 font-semibold">
-
+              <p className="mt-6 font-semibold text-sky-600 group-hover:translate-x-1 transition-transform">
                 Open →
-
               </p>
 
             </Link>

@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  RotateCcw,
+  BookOpen,
+  Brain,
+} from "lucide-react";
 
 type Flashcard = {
   question: string;
@@ -32,27 +38,89 @@ export default function FlashcardDeck({ flashcards }: Props) {
     }
   }
 
+  const progress =
+    ((currentCard + 1) / flashcards.length) * 100;
+
   return (
     <div className="space-y-8">
 
-      {/* Progress */}
+      {/* Header */}
 
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
 
-        <h2 className="text-xl font-bold">
+        <div>
 
-          Card {currentCard + 1} / {flashcards.length}
+          <h2 className="text-2xl font-bold text-slate-900">
+            Flashcard Deck
+          </h2>
 
-        </h2>
+          <p className="mt-1 text-slate-500">
+            Card {currentCard + 1} of {flashcards.length}
+          </p>
+
+        </div>
 
         <button
           onClick={() => setFlipped(!flipped)}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-600 text-white hover:bg-violet-700 transition"
+          className="
+            inline-flex
+            items-center
+            gap-2
+            px-5
+            py-3
+            rounded-xl
+            bg-gradient-to-r
+            from-sky-500
+            to-blue-500
+            hover:from-sky-600
+            hover:to-blue-600
+            text-white
+            shadow-sm
+            transition-all
+          "
         >
           <RotateCcw size={18} />
 
           Flip Card
+
         </button>
+
+      </div>
+
+      {/* Progress */}
+
+      <div>
+
+        <div className="flex justify-between text-sm mb-3">
+
+          <span className="text-slate-600">
+            Progress
+          </span>
+
+          <span className="font-semibold text-sky-600">
+            {Math.round(progress)}%
+          </span>
+
+        </div>
+
+        <div className="h-3 rounded-full bg-slate-200 overflow-hidden">
+
+          <div
+            className="
+              h-full
+              rounded-full
+              bg-gradient-to-r
+              from-sky-500
+              to-blue-500
+              transition-all
+              duration-500
+            "
+            style={{
+              width: `${progress}%`,
+            }}
+          />
+
+        </div>
 
       </div>
 
@@ -63,39 +131,50 @@ export default function FlashcardDeck({ flashcards }: Props) {
         className="
           cursor-pointer
           rounded-3xl
-          shadow-xl
           border
-          border-stone-200
+          border-slate-200
           bg-white
-          min-h-[380px]
+          shadow-sm
+          hover:shadow-md
+          transition-all
+          duration-300
+          hover:scale-[1.01]
+          min-h-[420px]
           flex
           items-center
           justify-center
           p-10
-          transition-all
-          hover:scale-[1.01]
         "
       >
 
         {!flipped ? (
 
-          <div className="text-center">
+          <div className="text-center max-w-3xl">
 
-            <p className="text-sm uppercase tracking-widest text-violet-600 mb-6">
+            <div className="mx-auto w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center mb-8">
+
+              <Brain
+                size={36}
+                className="text-sky-600"
+              />
+
+            </div>
+
+            <p className="uppercase tracking-widest text-xs font-semibold text-sky-600 mb-5">
 
               Question
 
             </p>
 
-            <h1 className="text-3xl font-bold leading-relaxed">
+            <h1 className="text-3xl font-bold leading-relaxed text-slate-900">
 
               {card.question}
 
             </h1>
 
-            <p className="mt-10 text-stone-500">
+            <p className="mt-10 text-slate-500">
 
-              Click the card to reveal the answer
+              Click anywhere on the card to reveal the answer
 
             </p>
 
@@ -103,19 +182,34 @@ export default function FlashcardDeck({ flashcards }: Props) {
 
         ) : (
 
-          <div className="text-center">
+          <div className="text-center max-w-3xl">
 
-            <p className="text-sm uppercase tracking-widest text-green-600 mb-6">
+            <div className="mx-auto w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mb-8">
+
+              <BookOpen
+                size={36}
+                className="text-emerald-600"
+              />
+
+            </div>
+
+            <p className="uppercase tracking-widest text-xs font-semibold text-emerald-600 mb-5">
 
               Answer
 
             </p>
 
-            <h1 className="text-2xl leading-relaxed">
+            <h1 className="text-3xl font-semibold leading-relaxed text-slate-900">
 
               {card.answer}
 
             </h1>
+
+            <p className="mt-10 text-slate-500">
+
+              Click again to view the question
+
+            </p>
 
           </div>
 
@@ -131,17 +225,23 @@ export default function FlashcardDeck({ flashcards }: Props) {
           onClick={previousCard}
           disabled={currentCard === 0}
           className="
-            flex
+            inline-flex
             items-center
             gap-2
             px-6
             py-3
             rounded-xl
-            bg-stone-200
-            hover:bg-stone-300
+            border
+            border-slate-200
+            bg-white
+            text-slate-700
+            hover:bg-slate-50
+            transition-all
             disabled:opacity-50
+            disabled:cursor-not-allowed
           "
         >
+
           <ChevronLeft size={20} />
 
           Previous
@@ -152,18 +252,25 @@ export default function FlashcardDeck({ flashcards }: Props) {
           onClick={nextCard}
           disabled={currentCard === flashcards.length - 1}
           className="
-            flex
+            inline-flex
             items-center
             gap-2
             px-6
             py-3
             rounded-xl
-            bg-violet-600
-            hover:bg-violet-700
+            bg-gradient-to-r
+            from-sky-500
+            to-blue-500
+            hover:from-sky-600
+            hover:to-blue-600
             text-white
+            shadow-sm
+            transition-all
             disabled:opacity-50
+            disabled:cursor-not-allowed
           "
         >
+
           Next
 
           <ChevronRight size={20} />

@@ -2,99 +2,119 @@ import Link from "next/link";
 import {
   FileText,
   Brain,
-  MessageSquare,
+  BookOpen,
   CalendarDays,
 } from "lucide-react";
 
 const actions = [
   {
-    title: "Generate Summary",
+    title: "Generate Notes",
     icon: FileText,
     href: "/dashboard/ai-notes",
-    color: "bg-violet-600",
+    color: "bg-sky-100",
+    iconColor: "text-sky-600",
   },
   {
-    title: "Create Quiz",
+    title: "Practice Quiz",
     icon: Brain,
     href: "/dashboard/quiz",
-    color: "bg-blue-600",
+    color: "bg-indigo-100",
+    iconColor: "text-indigo-600",
   },
   {
-    title: "Ask AI",
-    icon: MessageSquare,
+    title: "Study Assistant",
+    icon: BookOpen,
     href: "/dashboard/chat",
-    color: "bg-green-600",
+    color: "bg-emerald-100",
+    iconColor: "text-emerald-600",
   },
   {
     title: "Study Planner",
     icon: CalendarDays,
     href: "/dashboard/planner",
-    color: "bg-orange-500",
+    color: "bg-amber-100",
+    iconColor: "text-amber-600",
   },
 ];
 
 export default function QuickActions() {
   return (
-    <div className="bg-white rounded-3xl border border-stone-200 shadow-sm p-8">
+    <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
 
-      <h2 className="text-2xl font-bold text-stone-900">
-        Quick Actions
-      </h2>
+      <div className="flex items-center justify-between mb-8">
 
-      <p className="text-stone-500 mt-1 mb-6">
-        Jump directly to your favourite AI tools.
-      </p>
+        <div>
 
-      <div className="grid grid-cols-2 gap-5">
+          <h2 className="text-2xl font-bold text-slate-900">
+            Quick Actions
+          </h2>
+
+          <p className="text-slate-500 mt-1">
+            Jump straight into your most-used tools.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
 
         {actions.map((action) => {
+
           const Icon = action.icon;
 
           return (
+
             <Link
               key={action.title}
               href={action.href}
               className="
                 group
-                rounded-2xl
+                rounded-3xl
                 border
-                border-stone-200
+                border-slate-200
+                bg-slate-50
                 p-6
-                hover:border-violet-300
-                hover:shadow-md
                 transition-all
+                duration-300
+                hover:bg-white
+                hover:shadow-lg
+                hover:-translate-y-1
               "
             >
 
               <div
-                className={`w-14 h-14 rounded-2xl ${action.color} flex items-center justify-center mb-5`}
+                className={`
+                  w-14
+                  h-14
+                  rounded-2xl
+                  ${action.color}
+                  flex
+                  items-center
+                  justify-center
+                  transition-all
+                  duration-300
+                  group-hover:scale-105
+                `}
               >
                 <Icon
-                  className="text-white"
-                  size={28}
+                  className={action.iconColor}
+                  size={26}
                 />
               </div>
 
-              <h3 className="text-2xl font-semibold text-stone-900 group-hover:text-violet-600 transition">
+              <h3 className="mt-5 font-bold text-slate-900 group-hover:text-sky-600 transition-colors">
                 {action.title}
               </h3>
 
-              <p className="text-stone-500 mt-2">
-                {action.title === "Generate Summary" &&
-                  "Generate smart summaries from your notes."}
-
-                {action.title === "Create Quiz" &&
-                  "Practice with AI-generated MCQs."}
-
-                {action.title === "Ask AI" &&
-                  "Ask questions and clear your doubts."}
-
-                {action.title === "Study Planner" &&
-                  "Create a personalized study schedule."}
+              <p className="text-sm text-slate-500 mt-2">
+                Open module
               </p>
 
             </Link>
+
           );
+
         })}
 
       </div>

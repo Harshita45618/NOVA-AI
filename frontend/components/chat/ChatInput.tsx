@@ -1,7 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { SendHorizontal } from "lucide-react";
+import {
+  SendHorizontal,
+  LoaderCircle,
+  Sparkles,
+} from "lucide-react";
 
 type Props = {
   onSend: (message: string) => void;
@@ -18,50 +22,100 @@ export default function ChatInput({
     if (!message.trim()) return;
 
     onSend(message);
-
     setMessage("");
   }
 
   return (
-    <div className="flex gap-3 mt-6">
+    <div className="mt-6">
 
-      <input
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            sendMessage();
-          }
-        }}
-        placeholder="Ask NOVA AI anything..."
+      <div
         className="
-          flex-1
-          rounded-2xl
+          bg-white
           border
-          border-stone-300
-          px-5
-          py-4
-          outline-none
-          focus:ring-2
-          focus:ring-violet-500
-        "
-      />
-
-      <button
-        onClick={sendMessage}
-        disabled={loading}
-        className="
-          px-6
-          rounded-2xl
-          bg-violet-600
-          text-white
-          hover:bg-violet-700
-          transition
-          disabled:opacity-50
+          border-slate-200
+          rounded-3xl
+          shadow-sm
+          p-3
+          flex
+          items-end
+          gap-3
         "
       >
-        <SendHorizontal />
-      </button>
+
+        <div className="flex-1">
+
+          <div className="flex items-center gap-2 mb-2 px-2">
+
+            <Sparkles
+              size={15}
+              className="text-sky-600"
+            />
+
+            <span className="text-xs font-medium text-slate-500">
+              Ask NOVA AI anything
+            </span>
+
+          </div>
+
+          <input
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                sendMessage();
+              }
+            }}
+            placeholder="Explain operating systems, debug code, solve DSA problems..."
+            className="
+              w-full
+              bg-transparent
+              px-2
+              py-3
+              text-slate-700
+              placeholder:text-slate-400
+              outline-none
+            "
+          />
+
+        </div>
+
+        <button
+          onClick={sendMessage}
+          disabled={loading || !message.trim()}
+          className="
+            h-14
+            w-14
+            rounded-2xl
+            bg-gradient-to-r
+            from-sky-500
+            to-blue-500
+            hover:from-sky-600
+            hover:to-blue-600
+            disabled:opacity-50
+            disabled:cursor-not-allowed
+            transition-all
+            shadow-sm
+            flex
+            items-center
+            justify-center
+            text-white
+          "
+        >
+          {loading ? (
+            <LoaderCircle
+              size={22}
+              className="animate-spin"
+            />
+          ) : (
+            <SendHorizontal size={22} />
+          )}
+        </button>
+
+      </div>
+
+      <p className="mt-3 text-center text-xs text-slate-500">
+        Press <span className="font-semibold">Enter</span> to send your message.
+      </p>
 
     </div>
   );

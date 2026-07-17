@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Bot, User, Copy, Check } from "lucide-react";
+import {
+  Bot,
+  User,
+  Copy,
+  Check,
+  Sparkles,
+} from "lucide-react";
 
 type Props = {
   role: "user" | "assistant";
@@ -27,40 +33,73 @@ export default function ChatMessage({
 
   return (
     <div
-      className={`flex gap-4 mb-8 ${
+      className={`flex gap-4 ${
         isUser ? "justify-end" : "justify-start"
       }`}
     >
+      {/* AI Avatar */}
+
       {!isUser && (
-        <div className="w-12 h-12 rounded-full bg-violet-600 flex items-center justify-center shrink-0">
-          <Bot className="text-white" size={22} />
+        <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center shrink-0">
+
+          <Bot
+            className="text-sky-600"
+            size={22}
+          />
+
         </div>
       )}
+
+      {/* Bubble */}
 
       <div
         className={`
           max-w-3xl
           rounded-3xl
-          shadow-md
           px-6
           py-5
+          shadow-sm
+          transition-all
           ${
             isUser
-              ? "bg-violet-600 text-white"
-              : "bg-white border border-stone-200"
+              ? "bg-gradient-to-r from-sky-500 to-blue-500 text-white"
+              : "bg-white border border-slate-200 hover:shadow-md"
           }
         `}
       >
-        {!isUser && (
-          <div className="flex justify-between items-center mb-4">
+        {/* AI Header */}
 
-            <h3 className="font-bold text-violet-700">
-              NOVA AI
-            </h3>
+        {!isUser && (
+
+          <div className="flex items-center justify-between mb-5">
+
+            <div className="flex items-center gap-2">
+
+              <Sparkles
+                size={16}
+                className="text-sky-600"
+              />
+
+              <h3 className="font-semibold text-slate-900">
+                NOVA AI
+              </h3>
+
+            </div>
 
             <button
               onClick={copyText}
-              className="flex items-center gap-2 text-sm px-3 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 transition"
+              className="
+                inline-flex
+                items-center
+                gap-2
+                px-3
+                py-1.5
+                rounded-lg
+                bg-slate-100
+                hover:bg-slate-200
+                text-slate-600
+                transition
+              "
             >
               {copied ? (
                 <>
@@ -76,51 +115,92 @@ export default function ChatMessage({
             </button>
 
           </div>
+
         )}
 
+        {/* User */}
+
         {isUser ? (
+
           <>
             <div className="flex items-center gap-2 mb-3">
+
               <User size={18} />
+
               <span className="font-semibold">
                 You
               </span>
+
             </div>
 
-            <p>{content}</p>
+            <p className="leading-7 whitespace-pre-wrap">
+              {content}
+            </p>
           </>
+
         ) : (
+
           <div
             className="
               prose
-              prose-stone
               max-w-none
 
-              prose-headings:text-violet-700
+              prose-slate
+
+              prose-headings:text-slate-900
               prose-headings:font-bold
 
-              prose-strong:text-violet-700
+              prose-p:text-slate-700
+              prose-p:leading-8
 
-              prose-code:text-pink-600
+              prose-strong:text-sky-700
 
-              prose-pre:bg-stone-900
+              prose-a:text-sky-600
+
+              prose-li:text-slate-700
+
+              prose-ul:leading-8
+
+              prose-code:text-sky-700
+              prose-code:bg-sky-50
+              prose-code:px-1
+              prose-code:py-0.5
+              prose-code:rounded
+
+              prose-pre:bg-slate-900
               prose-pre:text-white
+              prose-pre:rounded-2xl
+
+              prose-blockquote:border-sky-500
+              prose-blockquote:text-slate-600
 
               prose-table:w-full
+              prose-th:border
+              prose-td:border
             "
           >
             <ReactMarkdown>
               {content}
             </ReactMarkdown>
           </div>
+
         )}
+
       </div>
 
+      {/* User Avatar */}
+
       {isUser && (
-        <div className="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center shrink-0">
-          <User className="text-white" size={22} />
+        <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center shrink-0">
+
+          <User
+            className="text-white"
+            size={22}
+          />
+
         </div>
       )}
+
     </div>
   );
 }

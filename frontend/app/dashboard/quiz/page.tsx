@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Brain,
+  Sparkles,
+  ArrowLeft,
+  LoaderCircle,
+} from "lucide-react";
+
 import Quiz from "@/components/quiz/Quiz";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
@@ -30,32 +37,76 @@ export default function QuizPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-[#F5F7FA]">
-        <h1 className="text-2xl font-bold text-stone-800">
-          Loading Quiz...
-        </h1>
+      <main className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-10 flex flex-col items-center">
+
+          <div className="w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
+
+            <LoaderCircle
+              size={40}
+              className="text-sky-600 animate-spin"
+            />
+
+          </div>
+
+          <h1 className="mt-8 text-2xl font-bold text-slate-900">
+            Loading Quiz...
+          </h1>
+
+          <p className="mt-2 text-slate-500">
+            Preparing your AI-generated questions.
+          </p>
+
+        </div>
       </main>
     );
   }
 
   if (questions.length === 0) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-[#F5F7FA]">
+      <main className="min-h-screen bg-slate-50 flex items-center justify-center px-6">
 
-        <div className="bg-white p-10 rounded-3xl shadow-lg text-center">
+        <div className="bg-white border border-slate-200 rounded-3xl shadow-sm p-10 max-w-lg w-full text-center">
 
-          <h1 className="text-3xl font-bold text-stone-900 mb-4">
+          <div className="mx-auto w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center">
+
+            <Brain
+              size={36}
+              className="text-sky-600"
+            />
+
+          </div>
+
+          <h1 className="mt-8 text-3xl font-bold text-slate-900">
             No Quiz Found
           </h1>
 
-          <p className="text-stone-600 mb-8">
-            Please generate a quiz from AI Notes first.
+          <p className="mt-4 text-slate-500 leading-7">
+            Generate a quiz from the AI Notes module first.
           </p>
 
           <button
             onClick={() => router.push("/dashboard/ai-notes")}
-            className="px-6 py-3 rounded-xl bg-violet-600 text-white hover:bg-violet-700 transition"
+            className="
+              mt-8
+              inline-flex
+              items-center
+              gap-2
+              px-6
+              py-3
+              rounded-xl
+              bg-gradient-to-r
+              from-sky-500
+              to-blue-500
+              hover:from-sky-600
+              hover:to-blue-600
+              text-white
+              font-medium
+              shadow-sm
+              transition-all
+            "
           >
+            <ArrowLeft size={18} />
             Back to AI Notes
           </button>
 
@@ -66,26 +117,53 @@ export default function QuizPage() {
   }
 
   return (
-  <DashboardLayout>
+    <DashboardLayout>
 
-    <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto">
 
-      <div className="mb-8">
+        {/* Header */}
 
-        <h1 className="text-4xl font-bold text-stone-900">
-          🧠 AI Quiz
-        </h1>
+        <div className="mb-8">
 
-        <p className="text-stone-600 mt-2">
-          Test your understanding with AI-generated questions.
-        </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-sky-100 to-blue-200 text-sky-700 text-sm font-semibold mb-4">
+
+            <Sparkles size={16} />
+
+            AI Powered Assessment
+
+          </div>
+
+          <div className="flex items-center gap-4">
+
+            <div className="w-14 h-14 rounded-2xl bg-sky-100 flex items-center justify-center">
+
+              <Brain
+                className="text-sky-600"
+                size={26}
+              />
+
+            </div>
+
+            <div>
+
+              <h1 className="text-4xl font-bold text-slate-900">
+                AI Quiz
+              </h1>
+
+              <p className="mt-2 text-slate-600">
+                Test your understanding with AI-generated questions.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <Quiz questions={questions} />
 
       </div>
 
-      <Quiz questions={questions} />
-
-    </div>
-
-  </DashboardLayout>
-);
+    </DashboardLayout>
+  );
 }

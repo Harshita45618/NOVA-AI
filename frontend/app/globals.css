@@ -1,8 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f6f8fc;
-  --foreground: #1f2937;
+  /* Base */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+
+  /* Brand */
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light: #dbeafe;
+
+  /* Accent */
+  --accent: #0ea5e9;
+
+  /* UI */
+  --card: #ffffff;
+  --border: #e2e8f0;
+
+  /* Text */
+  --text: #0f172a;
+  --muted: #64748b;
 }
 
 @theme inline {
@@ -21,16 +38,22 @@ html,
 body {
   margin: 0;
   padding: 0;
+  min-height: 100vh;
+
   background: var(--background);
   color: var(--foreground);
+
   font-family: Arial, Helvetica, sans-serif;
+
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Make ALL normal text black by default */
+/* Typography */
 
 h1,
 h2,
@@ -38,7 +61,8 @@ h3,
 h4,
 h5,
 h6 {
-  color: #111827;
+  color: #0f172a;
+  font-weight: 700;
 }
 
 p,
@@ -50,18 +74,58 @@ th,
 input,
 textarea,
 button {
-  color: #374151;
+  color: #334155;
 }
 
-/* Preserve placeholders */
+/* Inputs */
 
 input::placeholder,
 textarea::placeholder {
-  color: #9ca3af;
+  color: #94a3b8;
 }
 
 /* Links */
 
 a {
+  color: inherit;
   text-decoration: none;
+}
+
+/* Images */
+
+img {
+  user-select: none;
+}
+
+/* Selection */
+
+::selection {
+  background: #bfdbfe;
+  color: #0f172a;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Focus */
+
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }

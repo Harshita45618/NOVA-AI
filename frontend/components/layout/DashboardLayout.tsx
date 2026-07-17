@@ -11,24 +11,18 @@ export default function DashboardLayout({
   children,
 }: DashboardLayoutProps) {
   return (
-    <div className="min-h-screen bg-slate-50 flex">
-
+    <div className="min-h-screen flex bg-slate-50 text-slate-900">
       {/* Sidebar */}
 
       <Sidebar />
 
       {/* Main Content */}
 
-      <main className="flex-1 overflow-y-auto">
-
-        <div className="max-w-[1700px] mx-auto px-10 py-8">
-
+      <main className="flex-1 overflow-y-auto bg-slate-50">
+        <div className="mx-auto max-w-[1700px] px-10 py-8">
           {children}
-
         </div>
-
       </main>
-
     </div>
   );
 }

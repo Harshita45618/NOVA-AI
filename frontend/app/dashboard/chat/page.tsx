@@ -2,12 +2,19 @@
 
 import { useState } from "react";
 
+import {
+  Sparkles,
+  Bot,
+} from "lucide-react";
+
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import ChatWindow from "@/components/chat/ChatWindow";
 import ChatInput from "@/components/chat/ChatInput";
 import QuickPrompts from "@/components/chat/QuickPrompts";
 
 import { chatWithAI } from "@/services/chat";
+
+import { toast } from "sonner";
 
 type Message = {
   role: "user" | "assistant";
@@ -45,8 +52,7 @@ export default function ChatPage() {
       ]);
     } catch (error) {
       console.error(error);
-
-      alert("Failed to get AI response.");
+      toast.error("Failed to get AI response.");
     } finally {
       setLoading(false);
     }
@@ -60,28 +66,57 @@ export default function ChatPage() {
 
         <div className="mb-8">
 
-          <h1 className="text-5xl font-bold text-stone-900">
-            🤖 NOVA AI Assistant
-          </h1>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-sky-100 to-blue-200 text-sky-700 text-sm font-semibold mb-4">
 
-          <p className="text-lg text-stone-500 mt-3">
-            Your Personal AI Study Mentor
-          </p>
+            <Sparkles size={16} />
+
+            AI Powered Assistant
+
+          </div>
+
+          <div className="flex items-center gap-4">
+
+            <div className="w-14 h-14 rounded-2xl bg-sky-100 flex items-center justify-center">
+
+              <Bot
+                size={28}
+                className="text-sky-600"
+              />
+
+            </div>
+
+            <div>
+
+              <h1 className="text-4xl font-bold text-slate-900">
+                NOVA AI Assistant
+              </h1>
+
+              <p className="mt-2 text-slate-600">
+                Ask questions, understand concepts, solve doubts, and get personalized study guidance instantly.
+              </p>
+
+            </div>
+
+          </div>
 
         </div>
 
         {/* Quick Prompt Cards */}
 
-        <QuickPrompts
-          onPromptClick={handleSend}
-        />
+        <div className="mb-6">
+          <QuickPrompts
+            onPromptClick={handleSend}
+          />
+        </div>
 
         {/* Chat Window */}
 
-        <ChatWindow
-          messages={messages}
-          loading={loading}
-        />
+        <div className="mb-6">
+          <ChatWindow
+            messages={messages}
+            loading={loading}
+          />
+        </div>
 
         {/* Chat Input */}
 

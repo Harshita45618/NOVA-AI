@@ -5,6 +5,8 @@ import json
 
 load_dotenv()
 
+MODEL = "llama-3.3-70b-versatile"
+
 client = Groq(
     api_key=os.getenv("GROQ_API_KEY")
 )
@@ -12,23 +14,44 @@ client = Groq(
 
 def generate_flashcards(text: str):
 
-    prompt = f"""
-You are NOVA AI, an expert university study assistant.
+    if not text.strip():
+        return {
+            "error": "No study material provided."
+        }
 
-Create 10 flashcards from the study notes.
+    system_prompt = """
+You are NOVA AI, an expert engineering professor.
 
-Return ONLY valid JSON.
+Your job is to create high-quality flashcards that help students revise quickly.
 
-Format:
+Always return ONLY valid JSON.
+
+Never use Markdown.
+
+Never use code blocks.
+"""
+
+    user_prompt = f"""
+Create exactly 10 flashcards from the study material.
+
+Rules
+
+- Cover the most important concepts.
+- Questions should test understanding, not just memorization.
+- Answers should be concise (1–3 sentences).
+- Avoid duplicate questions.
+- Use simple language.
+
+Return ONLY this JSON format.
 
 [
     {{
-        "question": "...",
-        "answer": "..."
+        "question": "Question",
+        "answer": "Answer"
     }}
 ]
 
-Study Notes:
+Study Material
 
 {text}
 """
@@ -37,36 +60,37 @@ Study Notes:
 
         response = client.chat.completions.create(
 
-            model="llama-3.3-70b-versatile",
+            model=MODEL,
 
             messages=[
                 {
+                    "role": "system",
+                    "content": system_prompt
+                },
+                {
                     "role": "user",
-                    "content": prompt
+                    "content": user_prompt
                 }
             ],
 
-            temperature=0.3,
-            max_tokens=1200,
-
-            response_format={
-                "type": "json_object"
-            }
+            temperature=0.25,
+            max_tokens=1500
 
         )
 
-        content = response.choices[0].message.content
+        content = response.choices[0].message.content.strip()
 
-        data = json.loads(content)
+        if content.startswith("```json"):
+            content = content.replace("```json", "").replace("```", "").strip()
+        elif content.startswith("```"):
+            content = content.replace("```", "").strip()
 
-        # Handle both possible Groq outputs
-        if isinstance(data, list):
-            return data
+        return json.loads(content)
 
-        if "flashcards" in data:
-            return data["flashcards"]
-
-        return data
+    except json.JSONDecodeError:
+        return {
+            "error": "Invalid JSON returned by AI."
+        }
 
     except Exception as e:
         return {
